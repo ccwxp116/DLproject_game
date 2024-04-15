@@ -1,2 +1,2 @@
 # DLproject_game
-DL project
+DL project by Shiqi Wang, Yanfeiyun Wu, Bingnan Huo
