@@ -39,8 +39,8 @@ def get_data(train_file, test_file):
                 if word in vocabulary:  
                     test_data.append(word)
                 else:
-                    test_data.append(vocabulary['<UNK>'])
-
+                    test_data.append('<UNK>')
+    
     # Sanity Check, make sure there are no new words in the test data.
     assert reduce(lambda x, y: x and (y in vocabulary), test_data)
 
@@ -72,7 +72,8 @@ def split_train_test(data):
 
 
 # RUN test the function
-file_path = "../data/clean_data.csv"
+# file_path = "../data/clean_data.csv"
+file_path = "../data/data.csv"
 data = pd.read_csv(file_path)
 
 # split the data

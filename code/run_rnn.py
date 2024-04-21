@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 import preprocess
 from types import SimpleNamespace
-from rnn import *
+# from rnn import *
 
 # get the data
 train_id, test_id, vocab = preprocess.get_data("../data/nlp_train.txt", "../data/nlp_test.txt")
