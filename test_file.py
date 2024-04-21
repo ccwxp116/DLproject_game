@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 
 data = pd.read_csv("/Users/ciciwxp/Desktop/dlproj_data/games.csv")
 
@@ -7,6 +8,14 @@ print(data.shape)
 print(data.columns)
 
 selected_columns = ['About the game', 'Reviews', 'Header image', 'Screenshots', 'Genres']
+data = data[selected_columns].dropna()
+
+#english only
+english_pattern = re.compile(r'^[A-Za-z0-9\s\.,;:"\'?!-]+$')
+def is_english_and_long(text):
+    return bool(english_pattern.match(text)) and len(text) >= 30
+data = data[data['About the game'].apply(is_english_and_long)]
+
 
 missing_columns = [col for col in selected_columns if col not in data.columns]
 if not missing_columns:
