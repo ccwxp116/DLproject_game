@@ -8,7 +8,7 @@ class MyRNN(tf.keras.Model):
 
     ##########################################################################################
 
-    def __init__(self, vocab_size, rnn_size=256, embed_size=128):
+    def __init__(self, vocab_size, rnn_size=192, embed_size=96):
         """
         The Model class predicts the next words in a sequence.
         : param vocab_size : The number of unique words in the data
@@ -108,8 +108,8 @@ def get_text_model(vocab):
 
     return SimpleNamespace(
         model = model,
-        epochs = 32,
-        batch_size = 100,
+        epochs = 4,
+        batch_size = 20,
     )
 
 
