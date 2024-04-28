@@ -101,8 +101,8 @@ print('>>> after one-hot encode on y:', y.shape)
 
 # Define the LSTM language model architecture
 model = Sequential([
-    Embedding(y_onehot_shape, 100, input_length=(max_len-1)),
-    LSTM(150),
+    Embedding(y_onehot_shape, 10, input_length=(max_len-1)),
+    LSTM(15),
     Dense(y_onehot_shape, activation="softmax"),
 ])
 
@@ -113,4 +113,9 @@ model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"]
 model.summary()
 
 # Train the LSTM language model
-model.fit(X, y, epochs=3)
+model.fit(X, y, epochs=50)
+
+#save model
+model.save("10_15_epoch50.h5")
+with open("tokenizer.pickle", "wb") as handle:
+    pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
