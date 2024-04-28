@@ -7,8 +7,8 @@ from tqdm import tqdm
 ## download image from url:
 
 # path:
-data_path = './test.csv' #change to test or train
-image_folder = Path('./test_screenshots') #change to test or train
+data_path = 'data/test.csv' #change to test or train
+image_folder = Path('data/image/test_screenshots') #change to test or train
 image_folder.mkdir(parents=True, exist_ok=True)
 
 # code:
@@ -33,6 +33,6 @@ def download_and_name_by_index(url, dest_folder, index, timeout=10):
 
 # Download images with new naming convention and format
 indexed_downloads = [download_and_name_by_index(url, image_folder, idx) 
-                     for idx, url in enumerate(first_urls)]
+                     for idx, url in tqdm(enumerate(first_urls))]
 # Output the result of these downloads
-indexed_downloads
+#indexed_downloads
