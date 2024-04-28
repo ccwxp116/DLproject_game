@@ -113,4 +113,11 @@ model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"]
 model.summary()
 
 # Train the LSTM language model
-model.fit(X, y, epochs=3)
+model.fit(X, y, epochs=7)
+
+# Save the trained model to an HDF5 file
+model.save('100_150_epoch3_model.h5')
+
+# Save the tokenizer to a file using pickle
+with open('tokenizer.pickle', 'wb') as handle:
+    pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
