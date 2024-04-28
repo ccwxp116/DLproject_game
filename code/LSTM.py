@@ -39,10 +39,19 @@ vocab_size = len(vocab)
 # Y1 = process_data(20, Y1)
 # print(X0.shape, Y0.shape)
 
+def read_half_file(file_path):
+    with open(file_path, 'rb') as file:  # Open file in binary mode for more precise size handling
+        file_size = file.seek(0, 2)  # Move the cursor to the end of the file
+        half_file_size = file_size // 2  # Calculate half of the file size
+        
+        file.seek(0)  # Reset cursor to the start of the file
+        data = file.read(half_file_size)  # Read up to half of the file size
+    
+    return data.decode('utf-8')
+
 # read in the data
 train_path = "../data/nlp_train.txt"
-with open(train_path, 'r', encoding='utf-8') as file:
-    data = file.read()
+data = read_half_file(train_path)
 
 # separate punctuation
 def separate_punc(doc_text):
@@ -100,24 +109,30 @@ y_onehot_shape = y.shape[1]
 print('>>> after one-hot encode on y:', y.shape)
 
 # Define the LSTM language model architecture
+# model = Sequential([
+#     Embedding(input_dim=y_onehot_shape, output_dim=100, input_length=(max_len-1)),
+#     LSTM(units=150, dropout=0.2, recurrent_dropout=0.2),  # Adding dropout to input and recurrent connections
+#     Dropout(0.4),  # Adding dropout after LSTM
+#     Dense(units=y_onehot_shape, activation="softmax"),
+# ])
+
 model = Sequential([
-    Embedding(y_onehot_shape, 100, input_length=(max_len-1)),
-    LSTM(150),
-    Dense(y_onehot_shape, activation="softmax"),
+    Embedding(input_dim=y_onehot_shape, output_dim=100),
+    LSTM(units=150, dropout=0.2, recurrent_dropout=0.2, kernel_regularizer=l2(0.01)),  # Adding dropout to input and recurrent connections
+    Dropout(0.4),  # Adding dropout after LSTM
+    Dense(units=256, activation='relu', kernel_regularizer=l2(0.01)),
+    Dense(units=y_onehot_shape, activation="softmax"),
 ])
+model.compile(
+     loss="binary_crossentropy", 
+     optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4), 
+     metrics=["accuracy"]
+     )
 
 # Compile the model
-model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
 
 # Print the model summary
 model.summary()
 
 # Train the LSTM language model
-model.fit(X, y, epochs=7)
-
-# Save the trained model to an HDF5 file
-model.save('100_150_epoch3_model.h5')
-
-# Save the tokenizer to a file using pickle
-with open('tokenizer.pickle', 'wb') as handle:
-    pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
+model.fit(X, y, epochs=3)
