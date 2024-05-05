@@ -3,6 +3,7 @@ import numpy as np
 from functools import reduce
 import random
 import pandas as pd
+import re
 
 
 def get_data(train_file, test_file):
@@ -69,15 +70,29 @@ def split_train_test(data):
 
     return train_data, test_data
 
-
+# separate punctuation
+def separate_punctuation(text):
+    # Use regex to find punctuations and add space around them
+    processed_text = re.sub(r"([,.!?:'-0123456789#$%&()~])", r" \1 ", text)
+    # Remove extra spaces
+    processed_text = re.sub(r"\s{2,}", " ", processed_text)
+    return processed_text.strip()
 
 # RUN test the function
 # file_path = "../data/clean_data.csv"
 file_path = "../data/data.csv"
 data = pd.read_csv(file_path)
 
+data['About the game'] = data['About the game'].apply(separate_punctuation)
+print("<DataFrame processed with separated punctuation>")
+data = data[['About the game', 'Genres']]
+
 # split the data
 train, test = split_train_test(data)
+
+# for classification
+train.to_csv('../data/train_class.csv', index=True, header=True)
+test.to_csv('../data/test_class.csv', index=True, header=True)
 
 # for each train and test, only reserve the text data
 nlp_train = train['About the game'].replace('"', '')
