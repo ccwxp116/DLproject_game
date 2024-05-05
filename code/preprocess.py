@@ -85,6 +85,7 @@ data = pd.read_csv(file_path)
 
 data['About the game'] = data['About the game'].apply(separate_punctuation)
 print("<DataFrame processed with separated punctuation>")
+data['About the game'] = data['About the game'].replace('"', '')
 data = data[['About the game', 'Genres']]
 
 # split the data
