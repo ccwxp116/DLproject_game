@@ -88,12 +88,11 @@ print("<DataFrame processed with separated punctuation>")
 data['About the game'] = data['About the game'].replace('"', '')
 data = data[['About the game', 'Genres']]
 
+# classification
+data.to_csv('../data/data_class.csv', index=False, header=True)
+
 # split the data
 train, test = split_train_test(data)
-
-# for classification
-train.to_csv('../data/train_class.csv', index=False, header=True)
-test.to_csv('../data/test_class.csv', index=False, header=True)
 
 # for each train and test, only reserve the text data
 nlp_train = train['About the game'].replace('"', '')
