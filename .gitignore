@@ -5,3 +5,6 @@ code/checkpoints
 
 data/image
 *.npy
+
+*.pkl
+*.csv
