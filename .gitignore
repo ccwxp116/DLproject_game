@@ -1,2 +1,7 @@
-code/__pycache__/
-data/
+**pycache**
+*.pyc
+code/checkpoints
+data/image
+*.npy
+*.pkl
+*.csv
